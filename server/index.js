@@ -1,9 +1,14 @@
-const express = require('express');
+import express from 'express'
 const app = express();
-const mongoose = require('mongoose');
-const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const env = require('dotenv');
+import mongoose from 'mongoose';
+import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import env from 'dotenv';
+//
+
+
+// const User = require('./models/User');
+import User from './models/User.js';
 
 const connectDB = require('./config/db');
 
