@@ -10,7 +10,7 @@ import env from 'dotenv';
 // const User = require('./models/User');
 import User from './models/User.js';
 
-const connectDB = require('./config/db');
+import connectDB from './config/db.js';
 
 // Connect to MongoDB
 connectDB();

@@ -6,11 +6,10 @@ env.config();
 const MONGO_URI = process.env.MONGO_URI;
 
 const UserSchema = new mongoose.Schema({
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: false },
-    email: { type: String, unique: true},
-    password: { type: String, required: true, minlength: 6, select: false },
-    createdAt: { type: Date, default: Date.now }
+    fullname: { type: String},
+    email: { type: String, unique: true, required: [true, 'Email is required'], lowercase: true, match: [/\S+@\S+\.\S+/, 'is invalid'] },
+    password: { type: String, required: [true, 'Password is required'], minlength: 6, select: false },
+    //createdAt: { type: Date, default: Date.now }
 
 }, 
 { timestamps: true });
