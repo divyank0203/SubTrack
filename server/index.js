@@ -12,21 +12,37 @@ import User from './models/User.js';
 
 import connectDB from './config/db.js';
 
-// Connect to MongoDB
-connectDB();
-
-
 env.config();
 const PORT = process.env.PORT;
+
+// Connect to MongoDB
+connectDB()
+.then(()=> {
+    app.on("error", (error) => {
+        console.error("Error Connecting to MongoDB: ", error);
+        throw error;
+    })
+})
+.then(() => {
+    app.listen(PORT || 8000, () => {
+        console.log(`Server is running on port ${PORT || 8000}`);
+    })
+})
+.catch( (error) => {
+    console.error("Error starting the server: ", error);
+})
+
+
+
 // const MONGO_URI = process.env.MONGO_URI;
 
 app.use(cors());
 app.use(express.json());
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
 
 
 
