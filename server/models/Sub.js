@@ -13,3 +13,7 @@ const SubSchema = new mongoose.Schema({
     active: { type: Boolean},    
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
 }, { timestamps: true })
+
+const Sub = mongoose.model("Sub", SubSchema);
+
+export default Sub;
