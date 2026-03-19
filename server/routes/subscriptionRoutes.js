@@ -47,4 +47,24 @@ router.post('/', authMiddle, async (req, res) => {
     }
 })
 
+router.get('/', authMiddle, async (req, res) => {
+    try{
+        const userId = req.user.id;
+        const subs = await Sub.find({ userId });
+        
+        return res.status(200).json({
+            success: true,
+            Subscriptions: subs
+
+        });
+    }
+    catch(error){
+        console.error("Error fetching subscriptions: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while fetching subscriptions"
+        })
+    }
+})
+
 export default router;
