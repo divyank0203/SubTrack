@@ -72,11 +72,11 @@ router.post('/login', async (req, res, next) => {
         }
 
         const token = jwt.sign({
-            id: existingUser._id},
-        JWT_SECRET,
-    {
-        expiresIn: '4d'
-    })
+            id: existingUser._id,
+            email: existingUser.email
+        }, JWT_SECRET, {
+            expiresIn: '4d'
+        });
         return res.status(200).json({
             success: true,
             message: "Login successful",
