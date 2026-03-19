@@ -1,22 +1,36 @@
 import express from 'express';
 import mongoose from 'mongoose';
 const router = express.Router();
-import authMiddle from '../middleware/authMiddleware';
+import authMiddle from '../middleware/authMiddleware.js';
 import User from '../models/User.js';
 import Sub from '../models/Sub.js';
 
-router.post('/addsub', authMiddle, async (req, res) => {
+router.post('/', authMiddle, async (req, res) => {
     try{
-        const { name, startdate, nextbilldate, amount, billcycle, active } = req.body;
-        if(!name || !startdate || !nextbilldate || !amount || !billcycle){
+        const { name, startdate, amount, billcycle } = req.body;
+        if(!name || !startdate || !amount || !billcycle){
             return res.status(400).json({
                 success: false,
                 message: "Please provide all required information"
             })
         }
-        const userId = req.user.id;
+        let nextbilldate = new Date(startdate);
+        if(billcycle === "Monthly"){
+            nextbilldate.setMonth(nextbilldate.getMonth() + 1);
+        }
+        else if(billcycle === "Weekly"){
+            nextbilldate.setDate(nextbilldate.getDate() + 7);
+        }
+        else if(billcycle === "Yearly"){
+            nextbilldate.setFullYear(nextbilldate.getFullYear() + 1);
+        }
+        // let active = true;
+        // if(nextbilldate < new Date()){
+        //     active = false;
+        // }
+        
         const newSub = await Sub.create({
-            name, startdate, nextbilldate, amount, billcycle, active, user: userId
+           userId: req.user.id, name, startdate, nextbilldate, amount, billcycle, active: true
         });
         return res.status(201).json({
             success: true,
@@ -32,3 +46,5 @@ router.post('/addsub', authMiddle, async (req, res) => {
         })
     }
 })
+
+export default router;

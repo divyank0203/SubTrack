@@ -42,7 +42,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRoute);
-app.use('/api/subs', subRoute);
+app.use('/api/subscriptions', subRoute);
 
 
 

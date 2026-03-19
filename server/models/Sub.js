@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import User from './User.js';
-import env from 'dotenv';
-env.config();
-const MONGO_URI = process.env.MONGO_URI;
+// import User from './User.js';
+// import env from 'dotenv';
+// env.config();
+// const MONGO_URI = process.env.MONGO_URI;
 
 const SubSchema = new mongoose.Schema({
     name: { type: String, required: true},
@@ -10,10 +10,10 @@ const SubSchema = new mongoose.Schema({
     nextbilldate: { type: Date, required: true},
     amount: { type: Number, required: true},
     billcycle: { type: String, required: true},
-    active: { type: Boolean},    
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+    active: { type: Boolean, default: true},    
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
 }, { timestamps: true })
 
-const Sub = mongoose.model("Sub", SubSchema);
+const Subscription = mongoose.model("Subscription", SubSchema);
 
-export default Sub;
+export default Subscription;
