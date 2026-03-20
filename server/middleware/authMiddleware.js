@@ -1,9 +1,9 @@
-import express from 'express';
+// import express from 'express';
 import jwt from 'jsonwebtoken';
 import env from 'dotenv';
 env.config();
 const JWT_SECRET = process.env.JWT_SECRET;
-import User from '../models/User.js';
+// import User from '../models/User.js';
 
 const authMiddle = (req, res, next) => {
     try{
