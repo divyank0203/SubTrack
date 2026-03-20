@@ -41,8 +41,15 @@ connectDB()
 app.use(cors());
 app.use(express.json());
 
+app.get('/', function(req, res){
+    res.send("SubTrack API is running");
+})
+
 app.use('/api/auth', authRoute);
 app.use('/api/subscriptions', subRoute);
+
+
+
 
 
 
