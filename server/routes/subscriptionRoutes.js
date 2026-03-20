@@ -1,8 +1,8 @@
 import express from 'express';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 const router = express.Router();
 import authMiddle from '../middleware/authMiddleware.js';
-import User from '../models/User.js';
+// import User from '../models/User.js';
 import Sub from '../models/Sub.js';
 
 router.post('/', authMiddle, async (req, res) => {
@@ -63,6 +63,75 @@ router.get('/', authMiddle, async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Server error while fetching subscriptions"
+        })
+    }
+})
+
+//Update a subscription
+router.put('/:id', authMiddle, async (req, res) => {
+    try{
+        const subId = req.params.id;
+        const sub = await Sub.findById(subId);
+        if(!sub){
+            return res.status(400).json({
+                success: false,
+                message: "Subscription not found"
+            })
+        }
+        if(sub.userId.toString() !== req.user.id){
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            })
+        }
+        const updatedSub = await findByIdAndUpdate(subId, req.body, { new: true });
+        return res.status(200).json({
+            success: true,
+            message: "Successfully updated subscription",
+            sub: updatedSub
+        })
+
+        
+        
+    }
+    catch(error){
+        console.error("Error updating subscription: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while updating subscription"
+        })
+    }
+})
+
+
+//delete a subscription
+router.delete('/:id', authMiddle, async (req, res) => {
+    try{
+        const subId = req.params.id;
+        const sub = await Sub.findById(subId);
+        if(!sub){
+            return res.status(400).json({
+                success: false,
+                message: "Subscription not found"
+            })
+        }
+        if(sub.userId.toString() !== req.user.id){
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized"
+            })
+        }
+        await Sub.findByIdAndDelete(subId);
+        return res.status(200).json({
+            success: true,
+            message: "Subscription deleted"
+        })
+    }
+    catch(error){
+        console.error("Error deleting subscription: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while deleting subscription"
         })
     }
 })
