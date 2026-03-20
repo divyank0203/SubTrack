@@ -29,7 +29,5 @@ catch(error){
 }
 }
 
-// We get token from - req.cookie.access_token;
-
 
 export default authMiddle;
