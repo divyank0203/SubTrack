@@ -136,4 +136,43 @@ router.delete('/:id', authMiddle, async (req, res) => {
     }
 })
 
+//Summary
+router.get('/summary', authMiddle, async (req, res) => {
+    try{
+        const subs = await Sub.find({ userId: req.user.id });
+        let activecount = 0;
+        let totalweekly = 0;
+        let totalmonthly = 0;
+        let totalyearly = 0;
+        subs.forEach(sub => {
+            if(sub.active){
+                activecount++;
+            }
+            if(sub.billcycle === "Weekly"){
+                totalweekly += sub.amount;
+            }
+            else if(sub.billcycle === "Monthly"){
+                totalmonthly += sub.amount;
+            }
+            else if(sub.billcycle === "Yearly"){
+                totalyearly += sub.amount;
+            }
+        })
+        return res.status(200).json({
+            success: true,
+            ActiveSubscriptions: activecount,
+            TotalWeekly: totalweekly,
+            TotalMonthly: totalmonthly,
+            TotalYearly: totalyearly
+        })
+    }
+    catch(error){
+        console.error("Error fetching summary: ", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error"
+        })
+    }
+})
+
 export default router;
